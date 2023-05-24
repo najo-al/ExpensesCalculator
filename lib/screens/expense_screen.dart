@@ -11,7 +11,33 @@ class ExpenseScreen extends StatefulWidget {
   @override
   _ExpenseScreenState createState() => _ExpenseScreenState();
 
-  Future<List<Map<String, dynamic>>> getExpense() async {
+  Future<List<Map<String, dynamic>>> getExpense(
+      {DateTime? startDate, DateTime? endDate}) async {
+    final _myDb = Hive.box('expenses');
+
+    // filter by date
+    if (startDate != null && endDate != null) {
+      final data = _myDb.keys.map((key) {
+        final item = _myDb.get(key);
+        return {
+          "id": key,
+          "title": item['title'],
+          "description": item['description'],
+          "amount": item['amount'],
+          "date": item['date']
+        };
+      }).toList();
+
+      final filteredData = data.reversed.toList().where((element) {
+        final date = element['date'];
+        print(date);
+        return date.isAfter(startDate) && date.isBefore(endDate);
+      }).toList();
+
+      print(filteredData);
+      return filteredData;
+    }
+
     return await _ExpenseScreenState()._readData();
   }
 }
@@ -21,7 +47,14 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
 
   final _myDb = Hive.box('expenses');
 
-  void _writeData(Map<String, dynamic> data) async {
+  void _writeData(Map<String, dynamic> data, [index]) async {
+    if (widget.expense != null) {
+      // show all componenets of db
+      print({_myDb.keys, _myDb.values});
+
+      await _myDb.putAt(index, data);
+      return;
+    }
     await _myDb.add(data);
     // _readData();
   }
@@ -30,7 +63,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
     final data = _myDb.keys.map((key) {
       final item = _myDb.get(key);
       return {
-        "key": key,
+        "id": key,
         "title": item['title'],
         "description": item['description'],
         "amount": item['amount'],
@@ -51,9 +84,13 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   void initState() {
     super.initState();
     if (widget.expense != null) {
+      // print('ge');
       _titleController.text = widget.expense!.title;
       _descriptionController.text = widget.expense!.description;
-      _amountController.text = widget.expense!.amount.toString();
+      _amountController.text =
+          widget.expense!.amount == widget.expense!.amount.toInt().toDouble()
+              ? widget.expense!.amount.toInt().toString()
+              : widget.expense!.amount.toString();
     }
   }
 
@@ -109,6 +146,17 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                       return;
                     }
 
+                    if (widget.expense != null) {
+                      _writeData({
+                        'title': _titleController.value.text,
+                        'description': _descriptionController.value.text,
+                        'amount': _amountController.value.text,
+                        'date': DateTime.now(),
+                      }, widget.expense!.id);
+                      Navigator.pop(context);
+                      return;
+                    }
+
                     _writeData({
                       'title': _titleController.value.text,
                       'description': _descriptionController.value.text,
@@ -132,7 +180,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                     ),
                   ),
                   child: Text(
-                    widget.expense == null ? 'Save' : 'Edit',
+                    widget.expense == null ? 'Add' : 'Save',
                     style: const TextStyle(fontSize: 20),
                   ),
                 ),

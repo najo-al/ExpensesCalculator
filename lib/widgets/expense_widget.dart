@@ -7,9 +7,9 @@ class ExpenseWidget extends StatelessWidget {
   final VoidCallback onLongPress;
   const ExpenseWidget(
       {Key? key,
-        required this.expense,
-        required this.onTap,
-        required this.onLongPress})
+      required this.expense,
+      required this.onTap,
+      required this.onLongPress})
       : super(key: key);
 
   @override

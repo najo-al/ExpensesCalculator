@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: Colors.grey.shade900,
           secondary: Color.fromARGB(255, 230, 169, 197),
+          tertiary: Colors.grey.shade800,
           background: Color.fromARGB(255, 17, 17, 17),
         ),
       ),
