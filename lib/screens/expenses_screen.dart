@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:gradproject/components/expense.dart';
-import 'package:gradproject/models/budget_model.dart';
 import 'package:gradproject/screens/expense_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import '../models/expenses_model.dart';
-import '../services/database_helper.dart';
-import '../widgets/expense_widget.dart';
 import 'budget_screen.dart';
-import 'expense_screen.dart';
 
 class ExpensesScreen extends StatefulWidget {
   const ExpensesScreen({Key? key}) : super(key: key);
@@ -32,10 +28,11 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
     return total;
   }
 
-  Future<void> deleteItem(int index) async {
+  Future<void> deleteItem(String id) async {
     List newList = _myDb.values.toList().reversed.toList();
+    print(id);
 
-    newList.removeAt(index);
+    newList.removeWhere((element) => element['id'] == id);
 
     await _myDb.clear();
     if (newList.isNotEmpty) {
@@ -51,7 +48,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     _expensesFuture =
-        ExpenseScreen().getExpense(startDate: today, endDate: now);
+        const ExpenseScreen().getExpense(startDate: today, endDate: now);
     label = 'Today';
   }
 
@@ -80,12 +77,12 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 }
               },
               padding: const EdgeInsets.all(16),
-              tabs: [
-                const GButton(
+              tabs: const [
+                GButton(
                   icon: Icons.home,
                   text: 'Home',
                 ),
-                const GButton(
+                GButton(
                   icon: Icons.settings,
                   text: 'Settings',
                 ),
@@ -93,14 +90,14 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
             ),
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 17, 17, 17),
+        backgroundColor: const Color.fromARGB(255, 17, 17, 17),
         appBar: AppBar(
           title: const Text('Expenses'),
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            // print(_myDb.values.toList());
+            print(_myDb.values.toList());
             // Hive.box('expenses').clear();
             await Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const ExpenseScreen()));
@@ -153,7 +150,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Text(
-                                      'Remainder: \$${(budget - expensesCost!) == (budget - expensesCost!).toInt().toDouble() ? (budget - expensesCost).toInt() : (budget - expensesCost!).toStringAsFixed(1)}',
+                                      'Remainder: \$${(budget - expensesCost!) == (budget - expensesCost).toInt().toDouble() ? (budget - expensesCost).toInt() : (budget - expensesCost).toStringAsFixed(1)}',
                                       style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 18,
@@ -184,18 +181,18 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                     final now = DateTime.now();
                     final today = DateTime(now.year, now.month, now.day);
                     setState(() {
-                      _expensesFuture =
-                          ExpenseScreen().getExpense(startDate: today);
+                      _expensesFuture = const ExpenseScreen()
+                          .getExpense(startDate: today, endDate: now);
                     });
                     label = 'Today';
                   },
-                  child: const Text('Today'),
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                       backgroundColor:
                           label == 'Today' ? Colors.grey.shade800 : null),
+                  child: const Text('Today'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -203,12 +200,11 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                     final today = DateTime(now.year, now.month, now.day);
                     final lastWeek = today.subtract(const Duration(days: 7));
                     setState(() {
-                      _expensesFuture = ExpenseScreen()
+                      _expensesFuture = const ExpenseScreen()
                           .getExpense(startDate: lastWeek, endDate: now);
                     });
                     label = 'Last Week';
                   },
-                  child: const Text('Last Week'),
                   // button color
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -216,6 +212,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                       ),
                       backgroundColor:
                           label == 'Last Week' ? Colors.grey.shade800 : null),
+                  child: const Text('Last Week'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -223,18 +220,18 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                     final today = DateTime(now.year, now.month, now.day);
                     final lastMonth = today.subtract(const Duration(days: 30));
                     setState(() {
-                      _expensesFuture = ExpenseScreen()
+                      _expensesFuture = const ExpenseScreen()
                           .getExpense(startDate: lastMonth, endDate: now);
                     });
                     label = 'Last Month';
                   },
-                  child: const Text('Last Month'),
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                       backgroundColor:
                           label == 'Last Month' ? Colors.grey.shade800 : null),
+                  child: const Text('Last Month'),
                 ),
               ],
             ),
@@ -256,7 +253,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 15, vertical: 10),
                               decoration: BoxDecoration(
-                                color: Color.fromARGB(255, 32, 32, 32),
+                                color: const Color.fromARGB(255, 32, 32, 32),
                                 borderRadius: BorderRadius.circular(10),
                                 boxShadow: const [
                                   BoxShadow(
@@ -351,11 +348,15 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () async {
-                                                      // print(
-                                                      //     'ere ${_myDb.values.toList()}');
-                                                      await deleteItem(index);
-                                                      // print(
-                                                      //     'ereee ${_myDb.values.toList()}');
+                                                      print(
+                                                          'ere ${_myDb.values.toList()}');
+                                                      print(currentExpense
+                                                          .toString());
+                                                      await deleteItem(
+                                                          currentExpense['id']
+                                                              .toString());
+                                                      print(
+                                                          'ereee ${_myDb.values.toList()}');
                                                       // await _myDb.compact();
                                                       setState(() {});
                                                       Navigator.pop(context);

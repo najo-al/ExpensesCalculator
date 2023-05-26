@@ -1,3 +1,4 @@
+// ignore_for_file: unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:gradproject/screens/expenses_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -21,9 +22,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: Colors.grey.shade900,
-          secondary: Color.fromARGB(255, 230, 169, 197),
+          secondary: const Color.fromARGB(255, 230, 169, 197),
           tertiary: Colors.grey.shade800,
-          background: Color.fromARGB(255, 17, 17, 17),
+          background: const Color.fromARGB(255, 17, 17, 17),
         ),
       ),
       home: const ExpensesScreen(),

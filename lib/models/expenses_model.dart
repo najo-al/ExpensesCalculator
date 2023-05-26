@@ -1,12 +1,12 @@
 class Expense {
-  final int? id;
+  final String id;
   final String title;
   final double amount;
   final String description;
   final DateTime date;
 
   const Expense({
-    this.id,
+    required this.id,
     required this.title,
     required this.amount,
     required this.description,

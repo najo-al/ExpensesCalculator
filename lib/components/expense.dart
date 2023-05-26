@@ -4,7 +4,7 @@ class ExpenseComponent extends StatelessWidget {
   final String title;
   final String value;
 
-  ExpenseComponent({required this.title, required this.value});
+  const ExpenseComponent({super.key, required this.title, required this.value});
 
   @override
   Widget build(BuildContext context) {

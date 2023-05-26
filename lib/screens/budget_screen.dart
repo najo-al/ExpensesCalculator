@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:gradproject/components/expense_input.dart';
 import 'package:gradproject/models/budget_model.dart';
 import 'package:gradproject/screens/expenses_screen.dart';
-import 'package:gradproject/services/database_helper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class BudgetScreen extends StatefulWidget {
@@ -25,7 +22,6 @@ class _BudgetScreenState extends State<BudgetScreen> {
 
   void _writeData(double budget) async {
     await _myDb.put(0, budget);
-    print(_myDb.get(0));
   }
 
   Future<double> _readData() async {
@@ -66,8 +62,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
                           builder: (context) => const ExpensesScreen()));
                 }
               },
-              padding: EdgeInsets.all(16),
-              tabs: [
+              padding: const EdgeInsets.all(16),
+              tabs: const [
                 GButton(
                   icon: Icons.home,
                   text: 'Home',
@@ -125,9 +121,9 @@ class _BudgetScreenState extends State<BudgetScreen> {
                       ),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'Save',
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
               ),

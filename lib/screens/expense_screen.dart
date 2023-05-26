@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gradproject/components/expense_input.dart';
 import 'package:gradproject/models/expenses_model.dart';
-import 'package:gradproject/services/database_helper.dart';
+import 'package:gradproject/screens/expenses_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 class ExpenseScreen extends StatefulWidget {
   final Expense? expense;
@@ -15,12 +16,11 @@ class ExpenseScreen extends StatefulWidget {
       {DateTime? startDate, DateTime? endDate}) async {
     final _myDb = Hive.box('expenses');
 
-    // filter by date
     if (startDate != null && endDate != null) {
       final data = _myDb.keys.map((key) {
         final item = _myDb.get(key);
         return {
-          "id": key,
+          "id": item['id'],
           "title": item['title'],
           "description": item['description'],
           "amount": item['amount'],
@@ -30,11 +30,9 @@ class ExpenseScreen extends StatefulWidget {
 
       final filteredData = data.reversed.toList().where((element) {
         final date = element['date'];
-        print(date);
         return date.isAfter(startDate) && date.isBefore(endDate);
       }).toList();
 
-      print(filteredData);
       return filteredData;
     }
 
@@ -47,14 +45,44 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
 
   final _myDb = Hive.box('expenses');
 
-  void _writeData(Map<String, dynamic> data, [index]) async {
+  void _writeData(Map<String, dynamic> data, [id]) async {
+    List _temp = [];
+    var tempVal;
     if (widget.expense != null) {
-      // show all componenets of db
-      print({_myDb.keys, _myDb.values});
+      await _readData().then((value) {
+        tempVal = value.reversed.toList();
+        print('READDATA: $tempVal');
+        return;
+        for (int i = 0; i < value.length; i++) {
+          _temp.add(value[i]);
+          // print('TEMP ADD ${value[i]}');
+          _temp = _temp.reversed.toList();
+          // if (value[i]['id'] == widget.expense!.id) {
+          //   print('VALUE: $value');
+          //   print('VALUE INDEX: ${value[i]}');
+          //   print('MYDB INDEX: ${_myDb.getAt(i)}');
+          //   _te
+          //   // _myDb.putAt(i, data);
+          // }
+        }
+      });
+      // print('TEMP: ${_temp}');
+      // print('READ ${tempVal[0]}');
+      // print('MYDB INDEX: ${await _myDb.getAt(0)}');
 
-      await _myDb.putAt(index, data);
+      // print('DB: ${_myDb.toMap()}');
+      for (int i = 0; i < tempVal.length; i++) {
+        if (tempVal[i]['id'] == id) {
+          // print('ID: $id');
+          // print('TEMPVAL: ${tempVal[i]}');
+          // print('MYDB: ${await _myDb.getAt(i)}');
+          _myDb.putAt(i, data);
+        }
+      }
+
       return;
     }
+    print(data);
     await _myDb.add(data);
     // _readData();
   }
@@ -63,7 +91,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
     final data = _myDb.keys.map((key) {
       final item = _myDb.get(key);
       return {
-        "id": key,
+        "id": item['id'],
         "title": item['title'],
         "description": item['description'],
         "amount": item['amount'],
@@ -79,6 +107,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _amountController = TextEditingController();
+  DateTime _date = DateTime.now();
 
   @override
   void initState() {
@@ -97,6 +126,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(widget.expense == null ? 'Add an expense' : 'Edit expense'),
@@ -128,6 +158,41 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
               keyboardType: TextInputType.number,
               // maxLines: '1',
             ),
+            // DATE SELECTOR FOR DEBUGGING PURPOSES
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade800,
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              ),
+              child: TextButton(
+                onPressed: () async {
+                  final DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2015, 8),
+                    lastDate: DateTime(2101),
+                  );
+                  if (picked != null)
+                    setState(() {
+                      _date = picked;
+                    });
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "$_date".split(' ')[0],
+                    style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
@@ -147,24 +212,42 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                     }
 
                     if (widget.expense != null) {
+                      // print('YOOOOO ${widget.expense!.id}');
                       _writeData({
+                        'id': widget.expense!.id,
                         'title': _titleController.value.text,
                         'description': _descriptionController.value.text,
                         'amount': _amountController.value.text,
-                        'date': DateTime.now(),
+                        'date': _date,
+                        // 'date': DateTime.now(),
                       }, widget.expense!.id);
-                      Navigator.pop(context);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ExpensesScreen()),
+                        (route) => false,
+                      );
+
                       return;
                     }
 
+                    print('yoooooo');
+
                     _writeData({
+                      'id': const Uuid().v4(),
                       'title': _titleController.value.text,
                       'description': _descriptionController.value.text,
                       'amount': _amountController.value.text,
-                      'date': DateTime.now(),
+                      'date': _date,
+                      // 'date': DateTime.now(),
                     });
 
-                    Navigator.pop(context);
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ExpensesScreen()),
+                      (route) => false,
+                    );
                   },
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(

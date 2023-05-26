@@ -7,7 +7,7 @@ class ExpenseInputComponent extends StatelessWidget {
   final String? maxLines;
   final TextInputType keyboardType;
 
-  ExpenseInputComponent({
+  const ExpenseInputComponent({super.key, 
     required this.controller,
     required this.hintText,
     required this.labelText,
@@ -29,13 +29,13 @@ class ExpenseInputComponent extends StatelessWidget {
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey.shade400),
           labelText: labelText,
-          labelStyle: TextStyle(color: Colors.white),
-          enabledBorder: OutlineInputBorder(
+          labelStyle: const TextStyle(color: Colors.white),
+          enabledBorder: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
             // borderSide: BorderSide(color: Colors.white, width: 2.0),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.secondary, width: 2.0),
           ),
