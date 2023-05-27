@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:gradproject/screens/expenses_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -18,8 +19,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: const ScrollBehavior().copyWith(overscroll: false),
+          child: child!,
+        );
+      },
       title: 'Flutter Local Database demo app',
       theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(),
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: Colors.grey.shade900,
           secondary: const Color.fromARGB(255, 230, 169, 197),

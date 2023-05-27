@@ -52,14 +52,6 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
       await _readData().then((value) {
         tempVal = value.reversed.toList();
         return;
-        for (int i = 0; i < value.length; i++) {
-          _temp.add(value[i]);
-          _temp = _temp.reversed.toList();
-          // if (value[i]['id'] == widget.expense!.id) {
-          //   _te
-          //   // _myDb.putAt(i, data);
-          // }
-        }
       });
 
       for (int i = 0; i < tempVal.length; i++) {
@@ -140,7 +132,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
             ExpenseInputComponent(
               controller: _amountController,
               hintText: 'Amount',
-              labelText: 'Expense amount',
+              labelText: 'Expense cost (\$)',
               keyboardType: TextInputType.number,
               // maxLines: '1',
             ),
@@ -155,6 +147,8 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
               ),
               child: TextButton(
                 onPressed: () async {
+                  FocusScope.of(context).unfocus();
+
                   final DateTime? picked = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
@@ -179,7 +173,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
               ),
             ),
 
-            const Spacer(),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
               child: SizedBox(
@@ -236,12 +230,11 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                     );
                   },
                   style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      Theme.of(context).colorScheme.secondary,
+                    ),
                     shape: MaterialStateProperty.all(
                       const RoundedRectangleBorder(
-                        side: BorderSide(
-                          color: Colors.white,
-                          width: 0.75,
-                        ),
                         borderRadius: BorderRadius.all(
                           Radius.circular(10.0),
                         ),
