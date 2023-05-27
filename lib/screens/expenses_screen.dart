@@ -30,7 +30,6 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
 
   Future<void> deleteItem(String id) async {
     List newList = _myDb.values.toList().reversed.toList();
-    print(id);
 
     newList.removeWhere((element) => element['id'] == id);
 
@@ -97,11 +96,9 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            print(_myDb.values.toList());
             // Hive.box('expenses').clear();
             await Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const ExpenseScreen()));
-            // setState(() {});
           },
           child: const Icon(Icons.add),
         ),
@@ -172,10 +169,10 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                 },
               ),
             ),
-            // select date range (today, last week, last month)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                // TODAY
                 ElevatedButton(
                   onPressed: () {
                     final now = DateTime.now();
@@ -194,6 +191,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                           label == 'Today' ? Colors.grey.shade800 : null),
                   child: const Text('Today'),
                 ),
+                // LAST WEEK
                 ElevatedButton(
                   onPressed: () {
                     final now = DateTime.now();
@@ -205,7 +203,6 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                     });
                     label = 'Last Week';
                   },
-                  // button color
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
@@ -214,6 +211,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                           label == 'Last Week' ? Colors.grey.shade800 : null),
                   child: const Text('Last Week'),
                 ),
+                // LAST MONTH
                 ElevatedButton(
                   onPressed: () {
                     final now = DateTime.now();
@@ -301,7 +299,6 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                               .tertiary,
                                         ),
                                         onPressed: () async {
-                                          // print(index);
                                           await Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -333,7 +330,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                         ),
                                         onPressed: () async {
                                           // pop up window
-                                          showDialog(
+                                          await showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
@@ -348,16 +345,46 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () async {
-                                                      print(
-                                                          'ere ${_myDb.values.toList()}');
-                                                      print(currentExpense
-                                                          .toString());
                                                       await deleteItem(
                                                           currentExpense['id']
                                                               .toString());
-                                                      print(
-                                                          'ereee ${_myDb.values.toList()}');
-                                                      // await _myDb.compact();
+                                                      final now =
+                                                          DateTime.now();
+                                                      final today = DateTime(
+                                                          now.year,
+                                                          now.month,
+                                                          now.day);
+                                                      if (label == 'Today') {
+                                                        _expensesFuture =
+                                                            const ExpenseScreen()
+                                                                .getExpense(
+                                                                    startDate:
+                                                                        today,
+                                                                    endDate:
+                                                                        now);
+                                                      }
+                                                      if (label ==
+                                                          'Last Week') {
+                                                        _expensesFuture =
+                                                            const ExpenseScreen().getExpense(
+                                                                startDate: today
+                                                                    .subtract(
+                                                                        const Duration(
+                                                                            days:
+                                                                                7)),
+                                                                endDate: now);
+                                                      }
+                                                      if (label ==
+                                                          'Last Month') {
+                                                        _expensesFuture =
+                                                            const ExpenseScreen().getExpense(
+                                                                startDate: today
+                                                                    .subtract(
+                                                                        const Duration(
+                                                                            days:
+                                                                                30)),
+                                                                endDate: now);
+                                                      }
                                                       setState(() {});
                                                       Navigator.pop(context);
                                                     },
@@ -367,6 +394,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                               );
                                             },
                                           );
+                                          // Navigator.pop(context);
                                           // await _myDb.deleteAt(index);
                                           // setState(() {});
                                         },

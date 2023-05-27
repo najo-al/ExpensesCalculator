@@ -51,38 +51,25 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
     if (widget.expense != null) {
       await _readData().then((value) {
         tempVal = value.reversed.toList();
-        print('READDATA: $tempVal');
         return;
         for (int i = 0; i < value.length; i++) {
           _temp.add(value[i]);
-          // print('TEMP ADD ${value[i]}');
           _temp = _temp.reversed.toList();
           // if (value[i]['id'] == widget.expense!.id) {
-          //   print('VALUE: $value');
-          //   print('VALUE INDEX: ${value[i]}');
-          //   print('MYDB INDEX: ${_myDb.getAt(i)}');
           //   _te
           //   // _myDb.putAt(i, data);
           // }
         }
       });
-      // print('TEMP: ${_temp}');
-      // print('READ ${tempVal[0]}');
-      // print('MYDB INDEX: ${await _myDb.getAt(0)}');
 
-      // print('DB: ${_myDb.toMap()}');
       for (int i = 0; i < tempVal.length; i++) {
         if (tempVal[i]['id'] == id) {
-          // print('ID: $id');
-          // print('TEMPVAL: ${tempVal[i]}');
-          // print('MYDB: ${await _myDb.getAt(i)}');
           _myDb.putAt(i, data);
         }
       }
 
       return;
     }
-    print(data);
     await _myDb.add(data);
     // _readData();
   }
@@ -113,7 +100,6 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   void initState() {
     super.initState();
     if (widget.expense != null) {
-      // print('ge');
       _titleController.text = widget.expense!.title;
       _descriptionController.text = widget.expense!.description;
       _amountController.text =
@@ -210,9 +196,11 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                         amount.isEmpty) {
                       return;
                     }
+                    if (_date.day == DateTime.now().day) {
+                      _date = DateTime.now();
+                    }
 
                     if (widget.expense != null) {
-                      // print('YOOOOO ${widget.expense!.id}');
                       _writeData({
                         'id': widget.expense!.id,
                         'title': _titleController.value.text,
@@ -230,8 +218,6 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
 
                       return;
                     }
-
-                    print('yoooooo');
 
                     _writeData({
                       'id': const Uuid().v4(),
