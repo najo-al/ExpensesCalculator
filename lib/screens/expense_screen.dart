@@ -41,6 +41,7 @@ class ExpenseScreen extends StatefulWidget {
 }
 
 class _ExpenseScreenState extends State<ExpenseScreen> {
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<Map<String, dynamic>> _expenses = [];
 
   final _myDb = Hive.box('expenses');
@@ -104,6 +105,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -208,13 +210,18 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                         'date': _date,
                         // 'date': DateTime.now(),
                       }, widget.expense!.id);
+
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ExpensesScreen()),
                         (route) => false,
                       );
-
+                      const snackBar = SnackBar(
+                        content: Text('Expense updated!'),
+                      );
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       return;
                     }
 
@@ -233,6 +240,11 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                           builder: (context) => const ExpensesScreen()),
                       (route) => false,
                     );
+                    const snackBar = SnackBar(
+                      content: Text('Expense updated!'),
+                    );
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(

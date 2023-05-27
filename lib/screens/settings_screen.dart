@@ -137,6 +137,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                     content: Text('Budget updated!'),
                   );
 
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 style: ButtonStyle(
@@ -207,7 +208,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
                               const snackBar = SnackBar(
                                 content: Text('Expenses reset!'),
                               );
-
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             },

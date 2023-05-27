@@ -16,6 +16,7 @@ class ExpensesScreen extends StatefulWidget {
 }
 
 class _ExpensesScreenState extends State<ExpensesScreen> {
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _myDb = Hive.box('expenses');
   late Future<List<Map<String, dynamic>>> _expensesFuture;
   String label = 'Today';
@@ -55,6 +56,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         // extendBody: true,
         bottomNavigationBar: Container(
           color: Colors.grey.shade900,
@@ -351,6 +353,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                   ],
                                 ),
                                 child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(
                                       width: 230,
@@ -481,6 +484,18 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                                         }
                                                         setState(() {});
                                                         Navigator.pop(context);
+                                                        const snackBar =
+                                                            SnackBar(
+                                                          content: Text(
+                                                              'Expense deleted!'),
+                                                        );
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .hideCurrentSnackBar();
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                snackBar);
                                                       },
                                                       child: const Text('Yes'),
                                                     ),
