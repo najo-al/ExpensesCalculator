@@ -19,6 +19,7 @@ class ExpenseComponent extends StatelessWidget {
           TextSpan(
             text: value,
             style: const TextStyle(
+              overflow: TextOverflow.visible,
               color: Colors.white,
               fontSize: 18,
             ),

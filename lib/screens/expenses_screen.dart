@@ -352,30 +352,37 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                 ),
                                 child: Row(
                                   children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        ExpenseComponent(
-                                            title: 'Title: ',
-                                            value: currentExpense['title']),
-                                        ExpenseComponent(
-                                            title: 'Description: ',
-                                            value:
-                                                currentExpense['description']),
-                                        ExpenseComponent(
-                                            title: 'Amount: ',
-                                            value: currentExpense['amount']
-                                                .toString()),
-                                        ExpenseComponent(
-                                          title: 'Date: ',
-                                          value: DateFormat('dd/MM/yy kk:mm')
-                                              .format(currentExpense['date'])
-                                              .toString(),
-                                        ),
-                                      ],
+                                    SizedBox(
+                                      width: 230,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          ExpenseComponent(
+                                              title: 'Title: ',
+                                              value: currentExpense['title']),
+                                          ExpenseComponent(
+                                              title: 'Description: ',
+                                              value: currentExpense[
+                                                          'description'] ==
+                                                      ''
+                                                  ? 'No description'
+                                                  : currentExpense[
+                                                      'description']),
+                                          ExpenseComponent(
+                                              title: 'Amount: ',
+                                              value: currentExpense['amount']
+                                                  .toString()),
+                                          ExpenseComponent(
+                                            title: 'Date: ',
+                                            value: DateFormat('dd/MM/yy kk:mm')
+                                                .format(currentExpense['date'])
+                                                .toString(),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     const Spacer(),
                                     Column(

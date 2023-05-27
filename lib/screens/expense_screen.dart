@@ -125,7 +125,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
             ExpenseInputComponent(
               controller: _descriptionController,
               hintText: 'Type here the expense',
-              labelText: 'Expense description',
+              labelText: 'Expense description (optional)',
               keyboardType: TextInputType.multiline,
               maxLines: '5',
             ),
@@ -185,9 +185,14 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                     final description = _descriptionController.value.text;
                     final amount = _amountController.value.text;
 
-                    if (title.isEmpty ||
-                        description.isEmpty ||
-                        amount.isEmpty) {
+                    if (title.isEmpty || amount.isEmpty) {
+                      FocusScope.of(context).unfocus();
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content:
+                                Text('Please fill all the required fields')),
+                      );
                       return;
                     }
                     if (_date.day == DateTime.now().day) {
