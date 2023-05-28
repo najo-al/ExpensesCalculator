@@ -8,23 +8,26 @@ class ExpenseComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        text: title,
-        style: TextStyle(
-          color: Colors.grey.shade500,
-          fontSize: 18,
-        ),
-        children: <TextSpan>[
-          TextSpan(
-            text: value,
-            style: const TextStyle(
-              overflow: TextOverflow.visible,
-              color: Colors.white,
-              fontSize: 18,
-            ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1),
+      child: RichText(
+        text: TextSpan(
+          text: title,
+          style: TextStyle(
+            color: Colors.grey.shade500,
+            fontSize: 18,
           ),
-        ],
+          children: <TextSpan>[
+            TextSpan(
+              text: value,
+              style: const TextStyle(
+                overflow: TextOverflow.visible,
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

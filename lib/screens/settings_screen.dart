@@ -25,6 +25,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
   void _writeData(double budget) async {
     await _myDb.put(0, budget);
   }
+  
 
   Future<double> _readData() async {
     final data = _myDb.get(0);
@@ -114,7 +115,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
             ExpenseInputComponent(
               controller: budgetController,
               hintText: 'Enter your budget',
-              labelText: 'Budget (\$)',
+              labelText: 'Budget (₺)',
               keyboardType: TextInputType.number,
             ),
             SizedBox(

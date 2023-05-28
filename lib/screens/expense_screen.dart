@@ -30,7 +30,8 @@ class ExpenseScreen extends StatefulWidget {
 
       final filteredData = data.reversed.toList().where((element) {
         final date = element['date'];
-        return date.isAfter(startDate) && date.isBefore(endDate);
+        return (date.isAfter(startDate) || date.isAtSameMomentAs(startDate)) &&
+            (date.isBefore(endDate) || date.isAtSameMomentAs(endDate));
       }).toList();
 
       return filteredData;
@@ -134,7 +135,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
             ExpenseInputComponent(
               controller: _amountController,
               hintText: 'Amount',
-              labelText: 'Expense cost (\$)',
+              labelText: 'Expense cost (₺)',
               keyboardType: TextInputType.number,
               // maxLines: '1',
             ),

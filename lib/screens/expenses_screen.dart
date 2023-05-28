@@ -115,414 +115,457 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
             Icons.add,
           ),
         ),
-        body: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.20,
-              width: MediaQuery.of(context).size.width,
-              child: FutureBuilder(
-                future: const BudgetScreen().getBudget(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    final budget = snapshot.data;
-                    if (budget != null) {
-                      return FutureBuilder(
-                        future: getExpensesCost(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            final expensesCost = snapshot.data;
-                            return Container(
-                                margin: const EdgeInsets.all(10),
-                                padding: const EdgeInsets.all(10),
-                                // height: 600,
-                                decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      offset: Offset(0, 2),
-                                      blurRadius: 6.0,
-                                    )
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    const Text(
-                                      'Budget: ',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.20,
+                width: MediaQuery.of(context).size.width,
+                child: FutureBuilder(
+                  future: const BudgetScreen().getBudget(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      final budget = snapshot.data;
+                      if (budget != null) {
+                        return FutureBuilder(
+                          future: getExpensesCost(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              final expensesCost = snapshot.data;
+                              return Container(
+                                  margin: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
+                                  // height: 600,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0,
+                                      )
+                                    ],
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text(
+                                        'Budget: ',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      '\$${budget == budget.toInt().toDouble() ? budget.toInt() : budget.toStringAsFixed(1)}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal,
+                                      Text(
+                                        '\₺${budget == budget.toInt().toDouble() ? budget.toInt() : budget.toStringAsFixed(1)}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal,
+                                        ),
                                       ),
-                                    ),
-                                    const Text(
-                                      'Remainder: ',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                      const Text(
+                                        'Remainder: ',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      '\$${(budget - expensesCost!) == (budget - expensesCost).toInt().toDouble() ? (budget - expensesCost).toInt() : (budget - expensesCost).toStringAsFixed(1)}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.normal,
+                                      Text(
+                                        '₺${(budget - expensesCost!) == (budget - expensesCost).toInt().toDouble() ? (budget - expensesCost).toInt() : (budget - expensesCost).toStringAsFixed(1)}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ));
-                          } else {
-                            return Container(
-                                margin: const EdgeInsets.all(10),
-                                padding: const EdgeInsets.all(10),
-                                height: 600,
-                                decoration: BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      offset: Offset(0, 2),
-                                      blurRadius: 6.0,
-                                    )
-                                  ],
-                                ));
-                          }
-                        },
-                      );
+                                    ],
+                                  ));
+                            } else {
+                              return Container(
+                                  margin: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
+                                  height: 600,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0,
+                                      )
+                                    ],
+                                  ));
+                            }
+                          },
+                        );
+                      } else {
+                        return const Text('Please add a budget first!');
+                      }
                     } else {
-                      return const Text('Please add a budget first!');
+                      return Container(
+                          margin: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
+                          height: 600,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.secondary,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black12,
+                                offset: Offset(0, 2),
+                                blurRadius: 6.0,
+                              )
+                            ],
+                          ));
                     }
-                  } else {
-                    return Container(
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(10),
-                        height: 600,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.secondary,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12,
-                              offset: Offset(0, 2),
-                              blurRadius: 6.0,
-                            )
-                          ],
-                        ));
-                  }
-                },
+                  },
+                ),
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // TODAY
-                ElevatedButton(
-                  onPressed: () {
-                    final now = DateTime.now();
-                    final today = DateTime(now.year, now.month, now.day);
-                    setState(() {
-                      _expensesFuture = const ExpenseScreen()
-                          .getExpense(startDate: today, endDate: now);
-                    });
-                    label = 'Today';
-                  },
-                  style: ElevatedButton.styleFrom(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // TODAY
+                  ElevatedButton(
+                    onPressed: () {
+                      final now = DateTime.now();
+                      final today = DateTime(now.year, now.month, now.day);
+                      setState(() {
+                        _expensesFuture = const ExpenseScreen()
+                            .getExpense(startDate: today, endDate: now);
+                      });
+                      label = 'Today';
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        backgroundColor:
+                            label == 'Today' ? Colors.grey.shade700 : null),
+                    child: const Text('Today'),
+                  ),
+                  // LAST WEEK
+                  ElevatedButton(
+                    onPressed: () {
+                      final now = DateTime.now();
+                      final today = DateTime(now.year, now.month, now.day);
+                      final lastWeek = today.subtract(const Duration(days: 7));
+                      setState(() {
+                        _expensesFuture = const ExpenseScreen()
+                            .getExpense(startDate: lastWeek, endDate: now);
+                      });
+                      label = 'Last Week';
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        backgroundColor:
+                            label == 'Last Week' ? Colors.grey.shade700 : null),
+                    child: const Text('Last Week'),
+                  ),
+                  // LAST MONTH
+                  ElevatedButton(
+                    onPressed: () {
+                      final now = DateTime.now();
+                      final today = DateTime(now.year, now.month, now.day);
+                      final lastMonth =
+                          today.subtract(const Duration(days: 30));
+                      setState(() {
+                        _expensesFuture = const ExpenseScreen()
+                            .getExpense(startDate: lastMonth, endDate: now);
+                      });
+                      label = 'Last Month';
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        backgroundColor: label == 'Last Month'
+                            ? Colors.grey.shade700
+                            : null),
+                    child: const Text('Last Month'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final dateRange = await showDateRangePicker(
+                        context: context,
+                        firstDate: DateTime(DateTime.now().year - 5),
+                        lastDate: DateTime.now(),
+                      );
+                      if (dateRange != null) {
+                        setState(() {
+                          _expensesFuture = const ExpenseScreen().getExpense(
+                              startDate: dateRange.start,
+                              endDate: dateRange.end);
+                        });
+                        label = 'Custom Range';
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       backgroundColor:
-                          label == 'Today' ? Colors.grey.shade700 : null),
-                  child: const Text('Today'),
-                ),
-                // LAST WEEK
-                ElevatedButton(
-                  onPressed: () {
-                    final now = DateTime.now();
-                    final today = DateTime(now.year, now.month, now.day);
-                    final lastWeek = today.subtract(const Duration(days: 7));
-                    setState(() {
-                      _expensesFuture = const ExpenseScreen()
-                          .getExpense(startDate: lastWeek, endDate: now);
-                    });
-                    label = 'Last Week';
-                  },
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      backgroundColor:
-                          label == 'Last Week' ? Colors.grey.shade700 : null),
-                  child: const Text('Last Week'),
-                ),
-                // LAST MONTH
-                ElevatedButton(
-                  onPressed: () {
-                    final now = DateTime.now();
-                    final today = DateTime(now.year, now.month, now.day);
-                    final lastMonth = today.subtract(const Duration(days: 30));
-                    setState(() {
-                      _expensesFuture = const ExpenseScreen()
-                          .getExpense(startDate: lastMonth, endDate: now);
-                    });
-                    label = 'Last Month';
-                  },
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      backgroundColor:
-                          label == 'Last Month' ? Colors.grey.shade700 : null),
-                  child: const Text('Last Month'),
-                ),
-              ],
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.tertiary,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black12,
-                    offset: Offset(0, 2),
-                    blurRadius: 6.0,
-                  )
+                          label == 'Custom Range' ? Colors.grey.shade700 : null,
+                    ),
+                    child: const Icon(Icons.calendar_today),
+                  ),
                 ],
               ),
-              height: 350,
-              width: double.infinity,
-              child: FutureBuilder(
-                future: _expensesFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    final expenses = snapshot.data;
-                    if (expenses != null) {
-                      if (expenses.isEmpty) {
-                        return const Center(
-                            child: Text(
-                          'Please add an expense!',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ));
-                      }
-                      return Scrollbar(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: expenses.length,
-                          itemBuilder: (context, index) {
-                            final currentExpense = expenses[index];
-                            return Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
-                                decoration: BoxDecoration(
-                                  color: const Color.fromARGB(255, 32, 32, 32),
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      offset: Offset(0, 2),
-                                      blurRadius: 6.0,
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: 230,
-                                      child: Column(
+              Container(
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.tertiary,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      offset: Offset(0, 2),
+                      blurRadius: 6.0,
+                    )
+                  ],
+                ),
+                height: 350,
+                width: double.infinity,
+                child: FutureBuilder(
+                  future: _expensesFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      final expenses = snapshot.data;
+                      if (expenses != null) {
+                        if (expenses.isEmpty) {
+                          return const Center(
+                              child: Text(
+                            'No expenses found in selected period!',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ));
+                        }
+                        return Scrollbar(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: expenses.length,
+                            itemBuilder: (context, index) {
+                              final currentExpense = expenses[index];
+                              return Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 5),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        const Color.fromARGB(255, 32, 32, 32),
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0,
+                                      )
+                                    ],
+                                  ),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 230,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ExpenseComponent(
+                                                title: 'Title: ',
+                                                value: currentExpense['title']),
+                                            ExpenseComponent(
+                                                title: 'Description: ',
+                                                value: currentExpense[
+                                                            'description'] ==
+                                                        ''
+                                                    ? 'No description'
+                                                    : currentExpense[
+                                                        'description']),
+                                            ExpenseComponent(
+                                                title: 'Amount: ',
+                                                value: currentExpense['amount']
+                                                    .toString()),
+                                            ExpenseComponent(
+                                              title: 'Date: ',
+                                              value: DateFormat(
+                                                      'dd/MM/yy kk:mm')
+                                                  .format(
+                                                      currentExpense['date'])
+                                                  .toString(),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          ExpenseComponent(
-                                              title: 'Title: ',
-                                              value: currentExpense['title']),
-                                          ExpenseComponent(
-                                              title: 'Description: ',
-                                              value: currentExpense[
-                                                          'description'] ==
-                                                      ''
-                                                  ? 'No description'
-                                                  : currentExpense[
-                                                      'description']),
-                                          ExpenseComponent(
-                                              title: 'Amount: ',
-                                              value: currentExpense['amount']
-                                                  .toString()),
-                                          ExpenseComponent(
-                                            title: 'Date: ',
-                                            value: DateFormat('dd/MM/yy kk:mm')
-                                                .format(currentExpense['date'])
-                                                .toString(),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary,
+                                            ),
+                                            onPressed: () async {
+                                              await Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ExpenseScreen(
+                                                              expense: Expense(
+                                                            id: currentExpense[
+                                                                'id'],
+                                                            title:
+                                                                currentExpense[
+                                                                    'title'],
+                                                            description:
+                                                                currentExpense[
+                                                                    'description'],
+                                                            amount: double.parse(
+                                                                currentExpense[
+                                                                    'amount']),
+                                                            date:
+                                                                currentExpense[
+                                                                    'date'],
+                                                          ))));
+                                            },
+                                            child: const Icon(Icons.edit),
+                                          ),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              // fixedSize: Size(12, 12),
+                                              backgroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary,
+                                            ),
+                                            onPressed: () async {
+                                              await showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: const Text(
+                                                        'Are you sure you want to delete this expense?'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: const Text(
+                                                            'Cancel'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () async {
+                                                          await deleteItem(
+                                                              currentExpense[
+                                                                      'id']
+                                                                  .toString());
+                                                          final now =
+                                                              DateTime.now();
+                                                          final today =
+                                                              DateTime(
+                                                                  now.year,
+                                                                  now.month,
+                                                                  now.day);
+                                                          if (label ==
+                                                              'Today') {
+                                                            _expensesFuture =
+                                                                const ExpenseScreen()
+                                                                    .getExpense(
+                                                                        startDate:
+                                                                            today,
+                                                                        endDate:
+                                                                            now);
+                                                          }
+                                                          if (label ==
+                                                              'Last Week') {
+                                                            _expensesFuture = const ExpenseScreen().getExpense(
+                                                                startDate: today
+                                                                    .subtract(
+                                                                        const Duration(
+                                                                            days:
+                                                                                7)),
+                                                                endDate: now);
+                                                          }
+                                                          if (label ==
+                                                              'Last Month') {
+                                                            _expensesFuture = const ExpenseScreen().getExpense(
+                                                                startDate: today
+                                                                    .subtract(
+                                                                        const Duration(
+                                                                            days:
+                                                                                30)),
+                                                                endDate: now);
+                                                          }
+                                                          setState(() {});
+                                                          Navigator.pop(
+                                                              context);
+                                                          const snackBar =
+                                                              SnackBar(
+                                                            content: Text(
+                                                                'Expense deleted!'),
+                                                          );
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .hideCurrentSnackBar();
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  snackBar);
+                                                        },
+                                                        child:
+                                                            const Text('Yes'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: const Icon(Icons.delete),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                    const Spacer(),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Theme.of(context)
-                                                .colorScheme
-                                                .tertiary,
-                                          ),
-                                          onPressed: () async {
-                                            await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ExpenseScreen(
-                                                            expense: Expense(
-                                                          id: currentExpense[
-                                                              'id'],
-                                                          title: currentExpense[
-                                                              'title'],
-                                                          description:
-                                                              currentExpense[
-                                                                  'description'],
-                                                          amount: double.parse(
-                                                              currentExpense[
-                                                                  'amount']),
-                                                          date: currentExpense[
-                                                              'date'],
-                                                        ))));
-                                          },
-                                          child: const Icon(Icons.edit),
-                                        ),
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Theme.of(context)
-                                                .colorScheme
-                                                .tertiary,
-                                          ),
-                                          onPressed: () async {
-                                            await showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: const Text(
-                                                      'Are you sure you want to delete this expense?'),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child:
-                                                          const Text('Cancel'),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () async {
-                                                        await deleteItem(
-                                                            currentExpense['id']
-                                                                .toString());
-                                                        final now =
-                                                            DateTime.now();
-                                                        final today = DateTime(
-                                                            now.year,
-                                                            now.month,
-                                                            now.day);
-                                                        if (label == 'Today') {
-                                                          _expensesFuture =
-                                                              const ExpenseScreen()
-                                                                  .getExpense(
-                                                                      startDate:
-                                                                          today,
-                                                                      endDate:
-                                                                          now);
-                                                        }
-                                                        if (label ==
-                                                            'Last Week') {
-                                                          _expensesFuture =
-                                                              const ExpenseScreen().getExpense(
-                                                                  startDate: today.subtract(
-                                                                      const Duration(
-                                                                          days:
-                                                                              7)),
-                                                                  endDate: now);
-                                                        }
-                                                        if (label ==
-                                                            'Last Month') {
-                                                          _expensesFuture =
-                                                              const ExpenseScreen().getExpense(
-                                                                  startDate: today.subtract(
-                                                                      const Duration(
-                                                                          days:
-                                                                              30)),
-                                                                  endDate: now);
-                                                        }
-                                                        setState(() {});
-                                                        Navigator.pop(context);
-                                                        const snackBar =
-                                                            SnackBar(
-                                                          content: Text(
-                                                              'Expense deleted!'),
-                                                        );
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .hideCurrentSnackBar();
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                                snackBar);
-                                                      },
-                                                      child: const Text('Yes'),
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                          child: const Icon(Icons.delete),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ));
-                          },
-                        ),
-                      );
+                                    ],
+                                  ));
+                            },
+                          ),
+                        );
+                      } else {
+                        return const CircularProgressIndicator();
+                      }
                     } else {
                       return const CircularProgressIndicator();
                     }
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }
