@@ -25,7 +25,6 @@ class _BudgetScreenState extends State<BudgetScreen> {
   void _writeData(double budget) async {
     await _myDb.put(0, budget);
   }
-  
 
   Future<double> _readData() async {
     final data = _myDb.get(0);
@@ -38,7 +37,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
   void initState() {
     super.initState();
     if (_myDb.get(0) != null) {
-      budgetController.text = _myDb.get(0) == _myDb.get(0).toInt().toDouble()
+      budgetController.text = _myDb.get(0) == _myDb.get(0).toInt()
           ? _myDb.get(0).toInt().toString()
           : _myDb.get(0).toString();
     }
@@ -127,6 +126,11 @@ class _BudgetScreenState extends State<BudgetScreen> {
                   final budget = budgetController.value.text;
 
                   if (budget.isEmpty) {
+                    const snackBar = SnackBar(
+                      content: Text('Please enter a budget!'),
+                    );
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     return;
                   }
 
@@ -165,7 +169,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Reset all expenses',
+                  'Delete all expenses',
                   style: TextStyle(
                       fontSize: 20,
                       color: Colors.white,
@@ -183,9 +187,9 @@ class _BudgetScreenState extends State<BudgetScreen> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: const Text('Reset all expenses'),
+                        title: const Text('Delete all expenses'),
                         content: const Text(
-                            'Are you sure you want to reset all expenses?'),
+                            'Are you sure you want to delete all expenses?'),
                         actions: [
                           TextButton(
                             onPressed: () {
@@ -214,7 +218,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             },
-                            child: const Text('Reset'),
+                            child: const Text('Delete'),
                           ),
                         ],
                       );
@@ -234,7 +238,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                   ),
                 ),
                 child: const Text(
-                  'Reset',
+                  'Delete',
                   style: TextStyle(fontSize: 20),
                 ),
               ),

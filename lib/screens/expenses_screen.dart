@@ -108,6 +108,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             // Hive.box('expenses').clear();
+            // Hive.box('budget').clear();
             await Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const ExpenseScreen()));
           },
@@ -208,7 +209,35 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                           },
                         );
                       } else {
-                        return const Text('Please add a budget first!');
+                        // text please add a budget
+                        return Container(
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
+                            height: 600,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.secondary,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 6.0,
+                                )
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: const [
+                                Text(
+                                  'Please add a budget in the settings!',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ));
                       }
                     } else {
                       return Container(

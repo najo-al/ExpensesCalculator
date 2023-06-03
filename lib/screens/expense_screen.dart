@@ -48,7 +48,6 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   final _myDb = Hive.box('expenses');
 
   void _writeData(Map<String, dynamic> data, [id]) async {
-    List _temp = [];
     var tempVal;
     if (widget.expense != null) {
       await _readData().then((value) {
@@ -123,11 +122,10 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
               hintText: 'Title',
               labelText: 'Expense title',
               keyboardType: TextInputType.text,
-              maxLines: '1',
             ),
             ExpenseInputComponent(
               controller: _descriptionController,
-              hintText: 'Type here the expense',
+              hintText: 'Enter expense description',
               labelText: 'Expense description (optional)',
               keyboardType: TextInputType.multiline,
               maxLines: '5',
@@ -137,7 +135,6 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
               hintText: 'Amount',
               labelText: 'Expense cost (₺)',
               keyboardType: TextInputType.number,
-              // maxLines: '1',
             ),
             // DATE SELECTOR FOR DEBUGGING PURPOSES
             Container(
@@ -156,7 +153,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(2015, 8),
-                    lastDate: DateTime(2101),
+                    lastDate: DateTime.now(),
                   );
                   if (picked != null)
                     setState(() {
@@ -242,7 +239,7 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                       (route) => false,
                     );
                     const snackBar = SnackBar(
-                      content: Text('Expense updated!'),
+                      content: Text('Expense added!'),
                     );
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);

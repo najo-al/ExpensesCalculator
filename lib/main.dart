@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(),
         colorScheme: ColorScheme.fromSwatch().copyWith(
           primary: Colors.grey.shade900,
-          secondary: const Color.fromARGB(255, 230, 169, 197),
+          secondary: Color.fromARGB(255, 107, 53, 78),
           tertiary: Colors.grey.shade800,
           background: const Color.fromARGB(255, 17, 17, 17),
         ),
