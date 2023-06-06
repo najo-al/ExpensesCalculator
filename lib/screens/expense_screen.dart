@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gradproject/components/expense_input.dart';
 import 'package:gradproject/models/expenses_model.dart';
-import 'package:gradproject/screens/expenses_screen.dart';
+import 'package:gradproject/screens/home_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 

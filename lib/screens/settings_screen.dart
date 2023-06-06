@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:gradproject/components/expense_input.dart';
 import 'package:gradproject/models/budget_model.dart';
-import 'package:gradproject/screens/expenses_screen.dart';
+import 'package:gradproject/screens/home_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class BudgetScreen extends StatefulWidget {

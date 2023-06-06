@@ -163,7 +163,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                         ),
                                       ),
                                       Text(
-                                        '\₺${budget == budget.toInt().toDouble() ? budget.toInt() : budget.toStringAsFixed(1)}',
+                                        '\₺${budget == budget.toInt().toDouble() ? budget.toInt() : budget.toString()}',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 18,
