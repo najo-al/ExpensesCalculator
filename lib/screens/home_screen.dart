@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:gradproject/components/expense.dart';
+import 'package:gradproject/components/budget_widget.dart';
 import 'package:gradproject/screens/expense_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
@@ -57,26 +57,22 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        // extendBody: true,
         bottomNavigationBar: Container(
           color: Colors.grey.shade900,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
             child: GNav(
               selectedIndex: 0,
-              // backgroundColor: Colors.grey.shade900,
               color: Colors.white,
               activeColor: Colors.white,
               tabBackgroundColor: Colors.grey.shade800,
               onTabChange: (index) {
                 if (index == 1) {
-                  // Hive.box('budget').clear();
-                  // Hive.box('expenses').clear();
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
                       transitionDuration:
-                          Duration.zero, // Set the transition duration to zero
+                          Duration.zero,
                       pageBuilder: (_, __, ___) => const BudgetScreen(),
                     ),
                   );
@@ -107,12 +103,10 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            // Hive.box('expenses').clear();
-            // Hive.box('budget').clear();
             await Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const ExpenseScreen()));
           },
-          child: Icon(
+          child: const Icon(
             Icons.add,
           ),
         ),
@@ -122,141 +116,8 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.20,
                 width: MediaQuery.of(context).size.width,
-                child: FutureBuilder(
-                  future: const BudgetScreen().getBudget(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      final budget = snapshot.data;
-                      if (budget != null) {
-                        return FutureBuilder(
-                          future: getExpensesCost(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              final expensesCost = snapshot.data;
-                              return Container(
-                                  margin: const EdgeInsets.all(10),
-                                  padding: const EdgeInsets.all(10),
-                                  // height: 600,
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        offset: Offset(0, 2),
-                                        blurRadius: 6.0,
-                                      )
-                                    ],
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text(
-                                        'Budget: ',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        '\₺${budget == budget.toInt().toDouble() ? budget.toInt() : budget.toString()}',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                      const Text(
-                                        'Remainder: ',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        '₺${(budget - expensesCost!) == (budget - expensesCost).toInt().toDouble() ? (budget - expensesCost).toInt() : (budget - expensesCost).toStringAsFixed(1)}',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ],
-                                  ));
-                            } else {
-                              return Container(
-                                  margin: const EdgeInsets.all(10),
-                                  padding: const EdgeInsets.all(10),
-                                  height: 600,
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        offset: Offset(0, 2),
-                                        blurRadius: 6.0,
-                                      )
-                                    ],
-                                  ));
-                            }
-                          },
-                        );
-                      } else {
-                        // text please add a budget
-                        return Container(
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.all(10),
-                            height: 600,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.secondary,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  offset: Offset(0, 2),
-                                  blurRadius: 6.0,
-                                )
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: const [
-                                Text(
-                                  'Please add a budget in the settings!',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ));
-                      }
-                    } else {
-                      return Container(
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.all(10),
-                          height: 600,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black12,
-                                offset: Offset(0, 2),
-                                blurRadius: 6.0,
-                              )
-                            ],
-                          ));
-                    }
-                  },
+                child: BudgetWidget(
+                  getExpensesCost: getExpensesCost,
                 ),
               ),
               Row(
@@ -486,7 +347,6 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                           ),
                                           ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                              // fixedSize: Size(12, 12),
                                               backgroundColor: Theme.of(context)
                                                   .colorScheme
                                                   .tertiary,

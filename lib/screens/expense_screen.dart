@@ -64,7 +64,6 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
       return;
     }
     await _myDb.add(data);
-    // _readData();
   }
 
   Future<List<Map<String, dynamic>>> _readData() async {
@@ -136,7 +135,6 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
               labelText: 'Expense cost (₺)',
               keyboardType: TextInputType.number,
             ),
-            // DATE SELECTOR FOR DEBUGGING PURPOSES
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               width: MediaQuery.of(context).size.width * 0.9,
@@ -206,7 +204,6 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                         'description': _descriptionController.value.text,
                         'amount': _amountController.value.text,
                         'date': _date,
-                        // 'date': DateTime.now(),
                       }, widget.expense!.id);
 
                       Navigator.pushAndRemoveUntil(
@@ -229,7 +226,6 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                       'description': _descriptionController.value.text,
                       'amount': _amountController.value.text,
                       'date': _date,
-                      // 'date': DateTime.now(),
                     });
 
                     Navigator.pushAndRemoveUntil(

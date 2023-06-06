@@ -59,13 +59,12 @@ class _BudgetScreenState extends State<BudgetScreen> {
               activeColor: Colors.white,
               tabBackgroundColor: Colors.grey.shade800,
               onTabChange: (index) {
-                //push replacement
                 if (index == 0) {
                   Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
                       transitionDuration:
-                          Duration.zero, // Set the transition duration to zero
+                          Duration.zero,
                       pageBuilder: (_, __, ___) => const ExpensesScreen(),
                     ),
                   );
@@ -122,7 +121,6 @@ class _BudgetScreenState extends State<BudgetScreen> {
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                 onPressed: () async {
-                  // databaseFactory.deleteDatabase('budget.db');
                   final budget = budgetController.value.text;
 
                   if (budget.isEmpty) {
@@ -205,7 +203,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
                                 context,
                                 PageRouteBuilder(
                                   transitionDuration: Duration
-                                      .zero, // Set the transition duration to zero
+                                      .zero,
                                   pageBuilder: (_, __, ___) =>
                                       const ExpensesScreen(),
                                 ),
